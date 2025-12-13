@@ -1,59 +1,48 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-bool isDigit(char ch)
+int main()
 {
-    if(ch >= '0' && ch <= '9')
-        return true;
-    else
-        return false;
-}
-
-string trans(string str){
-    if(str[0] != '0')
-        return str;
-    while(str.length()>1){
-        if(str[0] == '0')
-            str.erase(str.begin());
-        else
-            break;
-    }
-    return str;
-}
-
-
-int main(){
-    int N;
-    string str;
-    vector<string> answer;
-    cin >> N;
-    for(int i=0;i<N;i++){
+    int M;
+    cin >> M;
+    vector<string> v;
+    vector<string> res;
+    for(int i=0;i<M;i++){
         string tmp;
-        cin >> str;
-        for(int j=0;j<str.length();j++){
-            if(isDigit(str[j]))
-                tmp += str[j];
+        cin >> tmp;
+        v.push_back(tmp);
+    }
+    for(int i=0;i<M;i++){
+        string tmp;
+        for(int j=0;j<v[i].size();j++){
+            if(v[i][j] >= '0' && v[i][j]<='9')
+                tmp+=v[i][j];
             else{
-                if(!tmp.empty()){
-                    answer.push_back(trans(tmp));
-                    tmp.clear();
-                }
+                if(tmp.size()>0)
+                    res.push_back(tmp);
+                tmp="";
             }
         }
-        if(!tmp.empty()){
-            answer.push_back(trans(tmp));
-            tmp.clear();
-        }
+        if(tmp.size()>0)
+            res.push_back(tmp);
     }
-    sort(answer.begin(), answer.end(), [](const string& a, const string& b) {
-        if (a.size() != b.size())
-            return a.size() < b.size();  // 1순위: 길이
 
-        return a < b;  // 2순위: 사전순
+    for(int i=0;i<res.size();i++){
+        while(res[i][0] == '0' && res[i].size()!=1)
+            res[i].erase(0,1);
+    }
+
+    sort(res.begin(), res.end(), [](const string &a, const string &b){
+        if(a.size() != b.size())
+            return a.size() < b.size();
+        return a < b;
     });
-    for(int i=0; i < answer.size()-1;i++) cout << answer[i] << endl;
-    if(answer.size()>0)
-        cout << answer[answer.size()-1];
+
+    for(int i=0;i<res.size();i++){
+        cout << res[i];
+        if(i!=res.size()-1)
+            cout << endl;
+    }
     
     return 0;
 }
